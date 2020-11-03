@@ -9,6 +9,12 @@
 
 ## Why Domain Events
 
+### Design for scalability
+Most of times, even in average-complex applications, we need to implement complex workflows where a user action can impact on multiple aspects of the domain. Think about an e-commerce app, where a cart checkout involeves order creation, inventory check for products, scheduling shipments and so on. Some of this updates are performed with atomic transactions*, to make sure to leave the system in a consistent overall state. This of course affects performance as well as user experience.
+For this reason, DDD doctrine recommends to split up the domain implementation in "aggregates" which define what data are updated under atomicity contstraints, and every request should involve a single aggregate update, while the additional impacted aggregates are *eventually* updated
+
+*\*Notice, here "atomicity" and "consistency" are not referred to the data level*
+
 ### Managing side-effects
 
 ### Flexible Consistency Semantics

@@ -1,8 +1,7 @@
-package com.cingaldi.domainevents.integration;
+package com.cingaldi.orders_srv.integration;
 
-import com.cingaldi.domainevents.domain.events.AggregateUpdatedEvent;
-import com.cingaldi.domainevents.domain.models.AggregateRoot;
-import com.cingaldi.domainevents.domain.repositories.AggregateRepository;
+import com.cingaldi.orders_srv.domain.models.Order;
+import com.cingaldi.orders_srv.domain.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.*;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class IntegrationTest {
 
     @Autowired
-    AggregateRepository repository;
+    OrderRepository repository;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -38,14 +38,18 @@ public class IntegrationTest {
 
     @BeforeEach
     public void beforeEach() {
-        repository.save(AggregateRoot.create());
+        repository.save(Order.create());
     }
 
     @Test
     public void givenAggregate_whenUpdate_thenPublishEvent() throws Exception {
 
-        mockMvc.perform(put("/aggregate/11").content("{\"value\":1}"))
-                .andExpect(status().isOk());
+        mockMvc.perform(
+            post("/orders").contentType(MediaType.APPLICATION_JSON).content("{}")
+        )
+         .andExpect(
+            status().isAccepted()
+         );
 
         await().atMost(200, TimeUnit.MILLISECONDS).untilAsserted(() -> {
             rabbitTemplate.receive("test");

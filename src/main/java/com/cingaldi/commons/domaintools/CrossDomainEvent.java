@@ -7,6 +7,4 @@ public abstract class CrossDomainEvent  extends DomainEvent{
     }
 
     public abstract String topic();
-
-    public abstract String serialize();
 }

@@ -1,7 +1,7 @@
-package com.cingaldi.domainevents.application;
+package com.cingaldi.orders_srv.application;
 
-import com.cingaldi.domainevents.domain.models.AggregateRoot;
-import com.cingaldi.domainevents.domain.repositories.AggregateRepository;
+import com.cingaldi.orders_srv.domain.events.OrderCreatedEvt;
+import com.cingaldi.orders_srv.domain.repositories.OrderRepository;
 import com.cingaldi.commons.domaintools.DomainEventsListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +14,26 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @Transactional
-public class ApplicationServiceTest {
+public class OrdersServiceTest {
 
     @SpyBean
     DomainEventsListener listener;
 
     @Autowired
-    private ApplicationService sut;
+    private OrdersService sut;
 
     @Autowired
-    private AggregateRepository repository;
+    private OrderRepository repository;
 
     @Test
     public void shouldWork () {
 
         //Given
-        AggregateRoot fixture = repository.save(AggregateRoot.create());
 
         //When
-        sut.mutateAggregate(fixture.getId() , 1);
+        sut.createOrder();
 
         //Then
-        verify(listener).onDomainEvent(any());
+        verify(listener).onDomainEvent(any(OrderCreatedEvt.class));
     }
 }

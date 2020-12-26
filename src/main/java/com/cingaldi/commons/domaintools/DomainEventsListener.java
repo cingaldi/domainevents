@@ -1,21 +1,19 @@
-package com.cingaldi.domainevents.infrastructure;
+package com.cingaldi.commons.domaintools;
 
 import com.cingaldi.commons.domaintools.DomainEvent;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 @Component
+@Slf4j
 public class DomainEventsListener {
-
-    private static Logger log = getLogger("DomainEvent");
 
     @EventListener
     @Order(-1)
     public void onDomainEvent(DomainEvent evt) {
-        log.info("sent domain event of type {}", evt.type());
+        log.debug("sent domain event type={} , aggregate={} , id={}", evt.eventType(), evt.getAggregateType(), evt.getAggregateId());
+        log.info(evt.logMessage());
     }
 }

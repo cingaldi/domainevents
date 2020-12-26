@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -43,7 +44,7 @@ public class IntegrationTest {
     @Test
     public void givenAggregate_whenUpdate_thenPublishEvent() throws Exception {
 
-        mockMvc.perform(post("/aggregate"))
+        mockMvc.perform(put("/aggregate/11").content("{\"value\":1}"))
                 .andExpect(status().isOk());
 
         await().atMost(200, TimeUnit.MILLISECONDS).untilAsserted(() -> {

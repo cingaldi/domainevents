@@ -1,8 +1,12 @@
 package com.cingaldi.commons.domaintools;
 
-public interface CrossDomainEvent  extends DomainEvent{
+public abstract class CrossDomainEvent  extends DomainEvent{
 
-    String topic();
+    public CrossDomainEvent(String aggregateType, Long aggregateId) {
+        super(aggregateType, aggregateId);
+    }
 
-    String serialize();
+    public abstract String topic();
+
+    public abstract String serialize();
 }

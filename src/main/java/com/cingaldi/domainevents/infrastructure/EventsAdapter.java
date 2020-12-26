@@ -21,7 +21,7 @@ public class EventsAdapter {
     @Async
     @EventListener
     public void onCrossDomainEvent(CrossDomainEvent evt) {
-        log.info("publishing event of type {} with routing key {}" , evt.type(), evt.topic());
+        log.info("publishing event of type {} with routing key {}" , evt.eventType(), evt.topic());
         rabbitTemplate.convertAndSend(evt.topic(), evt.serialize());
     }
 }

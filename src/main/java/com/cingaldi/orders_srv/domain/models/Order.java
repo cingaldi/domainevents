@@ -14,6 +14,8 @@ public class Order extends AbstractAggregateRoot<Order> {
     @GeneratedValue
     private Long id;
 
+    private OrderState state;
+
     private Long storeId;
 
     public Order() {
@@ -29,6 +31,9 @@ public class Order extends AbstractAggregateRoot<Order> {
     }
 
     public static Order create () {
-        return new Order();
+        Order ret = new Order();
+        ret.state = OrderState.CREATED;
+
+        return ret;
     }
 }

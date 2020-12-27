@@ -45,7 +45,7 @@ public class IntegrationTest {
     public void givenAggregate_whenUpdate_thenPublishEvent() throws Exception {
 
         mockMvc.perform(
-            post("/orders").contentType(MediaType.APPLICATION_JSON).content("{}")
+            post("/orders").contentType(MediaType.APPLICATION_JSON).content("{\"storeId\":1}")
         )
          .andExpect(
             status().isAccepted()

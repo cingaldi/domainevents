@@ -7,13 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-
 @Entity
 public class Order extends AbstractAggregateRoot<Order> {
 
     @Id
     @GeneratedValue
     private Long id;
+
+    private Long storeId;
 
     public Order() {
     }
@@ -22,10 +23,12 @@ public class Order extends AbstractAggregateRoot<Order> {
         return id;
     }
 
-    public static Order create () {
-        Order order = new Order();
-        order.registerEvent(new OrderCreatedEvt(order.getId()));
+    public void initialize(Long storeId) {
+        this.storeId = storeId;
+        registerEvent(new OrderCreatedEvt(getId(), storeId));
+    }
 
-        return order;
+    public static Order create () {
+        return new Order();
     }
 }

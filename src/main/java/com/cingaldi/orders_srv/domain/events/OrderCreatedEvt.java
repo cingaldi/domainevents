@@ -4,8 +4,11 @@ import com.cingaldi.commons.domaintools.CrossDomainEvent;
 
 public class OrderCreatedEvt extends CrossDomainEvent {
 
-    public OrderCreatedEvt(Long id) {
-        super("AggregateRoot", id);
+    private Long storeId;
+
+    public OrderCreatedEvt(Long id, Long storeId) {
+        super("Order", id);
+        this.storeId = storeId;
     }
 
     @Override

@@ -60,18 +60,11 @@ public class IntegrationTest {
     public static class RabbitConfig {
 
         @Bean
-        public Exchange topicExchage () {
-            return new TopicExchange("amq.topic");
-        }
-
-        @Bean
-        public Queue queue() {
-            return new Queue("test" , false);
-        }
-
-        @Bean
         public Binding bind() {
-            return BindingBuilder.bind(queue()).to(topicExchage()).with("events.aggregates.aggregate.updated").noargs();
+            return BindingBuilder
+                    .bind(new Queue("test" , false))
+                    .to(new DirectExchange("amq.direct"))
+                    .with("events.aggregates.aggregate.updated");
         }
     }
 }

@@ -31,7 +31,7 @@ public class OrdersServiceTest {
         //Given
 
         //When
-        sut.createOrder();
+        sut.createOrder(0L);
 
         //Then
         verify(listener).onDomainEvent(any(OrderCreatedEvt.class));

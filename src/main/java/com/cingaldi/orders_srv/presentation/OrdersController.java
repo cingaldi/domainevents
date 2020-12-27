@@ -1,6 +1,7 @@
 package com.cingaldi.orders_srv.presentation;
 
 import com.cingaldi.orders_srv.application.OrdersService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,16 @@ public class OrdersController {
 
     @PostMapping("/orders")
     public ResponseEntity createOrder(@RequestBody CreateOrderRequest req) {
-        service.createOrder();
+        service.createOrder(req.getStoreId());
 
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
+    @Getter
     public static class CreateOrderRequest {
+
+        private Long storeId;
+
         public CreateOrderRequest() {
         }
     }

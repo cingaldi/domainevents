@@ -1,4 +1,4 @@
-package com.cingaldi.orders_srv;
+package com.cingaldi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

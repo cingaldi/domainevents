@@ -6,6 +6,10 @@ public class OrderCreatedEvt extends CrossDomainEvent {
 
     private Long storeId;
 
+    public OrderCreatedEvt (){
+        super(null, null);
+    }
+
     public OrderCreatedEvt(Long id, Long storeId) {
         super("Order", id);
         this.storeId = storeId;

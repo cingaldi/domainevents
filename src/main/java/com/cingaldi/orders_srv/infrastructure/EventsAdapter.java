@@ -15,18 +15,15 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Slf4j
 public class EventsAdapter {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private RabbitTemplate rabbitTemplate;
 
     @EventListener
     public void onCrossDomainEvent(CrossDomainEvent evt) throws JsonProcessingException {
 
-        String message = objectMapper.writeValueAsString(evt);
-        log.debug("publishing event topic={} , payload={}" , evt.topic(), message);
+        log.debug("publishing event topic={} , payload={}" , evt.topic(), evt.serialize(evt));
 
-        rabbitTemplate.convertAndSend(evt.topic(), message);
+        rabbitTemplate.convertAndSend(evt.topic(), evt.serialize(evt));
     }
 }

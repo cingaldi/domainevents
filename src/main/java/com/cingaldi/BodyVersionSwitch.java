@@ -18,6 +18,15 @@ public class BodyVersionSwitch {
         return new Version(version, version.equals(defaultVersion));
     }
 
+    /**
+     * lets developer automatically create a kill switch: when enabled falls back on the default version handler
+     *
+     */
+    public BodyVersionSwitch withKillSwitch(String name) {
+        //TODO implement
+        return this;
+    }
+
     public class Version {
         private String version;
         private boolean isDefault;

@@ -60,7 +60,7 @@ public class IntegrationTest {
     public static class RabbitConfig {
 
         @Bean
-        public Binding bind() {
+        public Binding testBind() {
             return BindingBuilder
                     .bind(new Queue("test" , false))
                     .to(new DirectExchange("amq.direct"))

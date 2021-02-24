@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
+@Entity(name = "orders_srv_orders")
 public class Order extends AbstractAggregateRoot<Order> {
 
     @Id

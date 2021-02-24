@@ -2,7 +2,6 @@ package com.cingaldi;
 
 import org.springframework.http.ResponseEntity;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BodyVersionSwitch {

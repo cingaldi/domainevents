@@ -1,6 +1,6 @@
 package com.cingaldi.stores_srv.presentation;
 
-import com.cingaldi.BodyVersionSwitch;
+import com.cingaldi.commons.resttools.BodyVersionSwitch;
 import com.cingaldi.commons.resttools.CollectionResource;
 import com.cingaldi.stores_srv.application.StoreService;
 import com.cingaldi.stores_srv.presentation.vm.StoreOrderVM;
@@ -39,5 +39,4 @@ public class StoreOrdersController {
             )
             .getResult();
     }
-
 }

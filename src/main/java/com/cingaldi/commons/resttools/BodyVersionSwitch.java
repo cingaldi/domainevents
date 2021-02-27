@@ -1,7 +1,9 @@
-package com.cingaldi;
+package com.cingaldi.commons.resttools;
 
+import com.cingaldi.commons.resttools.exceptions.MediaNotSupportedException;
 import org.springframework.http.ResponseEntity;
 
+import javax.print.attribute.standard.Media;
 import java.util.function.Supplier;
 
 public class BodyVersionSwitch {
@@ -32,7 +34,7 @@ public class BodyVersionSwitch {
         private String version;
         private boolean isDefault;
 
-        public Version(String version, boolean isDefault) {
+        private Version(String version, boolean isDefault) {
             this.version = version;
             this.isDefault = isDefault;
         }
@@ -67,7 +69,7 @@ public class BodyVersionSwitch {
         private String actualVersion;
         private ResponseEntity matched;
 
-        public MatchingVersion(String actualVersion) {
+        private MatchingVersion(String actualVersion) {
             this.actualVersion = actualVersion;
             this.matched = null;
         }
@@ -95,10 +97,9 @@ public class BodyVersionSwitch {
 
             if (this.matched != null) {
                 return this.matched;
-
             }
 
-            throw  new RuntimeException("none match");
+            throw new MediaNotSupportedException();
         }
     }
 }

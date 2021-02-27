@@ -1,4 +1,4 @@
-package com.cingaldi.stores_srv.presentation;
+package com.cingaldi.stores_srv;
 
 import com.cingaldi.orders_srv.domain.events.OrderCreatedEvt;
 import org.springframework.amqp.core.Message;

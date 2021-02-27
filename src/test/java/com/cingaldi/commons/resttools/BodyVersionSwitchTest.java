@@ -1,6 +1,5 @@
-package com.cingaldi;
+package com.cingaldi.commons.resttools;
 
-import com.cingaldi.commons.resttools.BodyVersionSwitch;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -30,16 +30,20 @@ public class StoreOrdersController {
     public ResponseEntity createStore(@RequestBody Object body, @RequestHeader("Content-Type") String contentType) {
 
         return new BodyVersionSwitch()
-                .withVersion(contentType, "")
-                .whenDefault(()->{
-                    StoreVM result = storeService.createStore((CreateStoreOldDTO)body).mapTo(StoreVM::fromEntity);
-                    return new ResponseEntity(result, HttpStatus.CREATED);
-                })
-                .orMatch("v1", ()->{
-                    StoreVM result = storeService.createStore((CreateStoreDTO) body).mapTo(StoreVM::fromEntity);
-                    return new ResponseEntity(result, HttpStatus.CREATED);
-                })
-                .getResult();
+            .withVersion(contentType, "")
+            .whenDefault(()->{
+
+                StoreVM result = storeService.createStore((CreateStoreOldDTO)body).mapTo(StoreVM::fromEntity);
+                return new ResponseEntity(result, HttpStatus.CREATED);
+
+            })
+            .orMatch("v1", ()->{
+
+                StoreVM result = storeService.createStore((CreateStoreDTO) body).mapTo(StoreVM::fromEntity);
+                return new ResponseEntity(result, HttpStatus.CREATED);
+
+            })
+            .getResult();
     }
 
     @GetMapping("/stores/{storeId}/orders")

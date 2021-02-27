@@ -35,14 +35,14 @@ public class StoreOrdersController {
         when we need to manage range of versions
          */
         return new BodyVersionSwitch()
-                .withVersion(acceptHeader, "")
-                .whenDefault(()->
-                    new ResponseEntity(new CollectionResource<>(result.mapTo(StoreOrderOldVM::fromEntity)), HttpStatus.OK)
-                )
-                .orMatch("v1", () ->
-                    new ResponseEntity(new CollectionResource<>(result.mapTo(StoreOrderVM::fromEntity)), HttpStatus.OK)
-                )
-                .getResult();
+            .withVersion(acceptHeader, "")
+            .whenDefault(()->
+                new ResponseEntity(new CollectionResource<>(result.mapTo(StoreOrderOldVM::fromEntity)), HttpStatus.OK)
+            )
+            .orMatch("v1", () ->
+                new ResponseEntity(new CollectionResource<>(result.mapTo(StoreOrderVM::fromEntity)), HttpStatus.OK)
+            )
+            .getResult();
     }
 
 }

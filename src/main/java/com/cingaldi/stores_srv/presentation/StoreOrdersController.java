@@ -1,10 +1,12 @@
 package com.cingaldi.stores_srv.presentation;
 
+import com.cingaldi.commons.domaintools.DomainCollectionResult;
 import com.cingaldi.commons.resttools.BodyVersionSwitch;
 import com.cingaldi.commons.resttools.CollectionResource;
 import com.cingaldi.commons.resttools.ErrorResource;
 import com.cingaldi.commons.resttools.exceptions.MediaNotSupportedException;
 import com.cingaldi.stores_srv.application.StoreService;
+import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.presentation.vm.StoreOrderVM;
 import com.cingaldi.stores_srv.presentation.vm.StoreOrderOldVM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class StoreOrdersController {
     @GetMapping("/stores/{storeId}/orders")
     public ResponseEntity getOrders(@PathVariable("storeId") Long storeId, @RequestHeader("Accept") String acceptHeader) {
 
-        var result = storeService.getOrdersFromStore(storeId);
+        DomainCollectionResult<StoreOrder> result = storeService.getOrdersFromStore(storeId);
 
         /*
         NOTICE: you don't really need to use this method. Spring Boot provides convenient annotations to match

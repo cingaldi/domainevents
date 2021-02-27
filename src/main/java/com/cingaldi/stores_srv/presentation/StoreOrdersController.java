@@ -1,10 +1,8 @@
 package com.cingaldi.stores_srv.presentation;
 
 import com.cingaldi.BodyVersionSwitch;
-import com.cingaldi.commons.domaintools.DomainCollectionResult;
 import com.cingaldi.commons.resttools.CollectionResource;
 import com.cingaldi.stores_srv.application.StoreService;
-import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.presentation.vm.StoreOrderVM;
 import com.cingaldi.stores_srv.presentation.vm.StoreOrderOldVM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class StoreOrdersController {

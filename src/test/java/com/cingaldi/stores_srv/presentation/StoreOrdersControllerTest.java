@@ -66,7 +66,4 @@ class StoreOrdersControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result[0].order.href", containsString("/orders/")));
     }
-
-
-
 }

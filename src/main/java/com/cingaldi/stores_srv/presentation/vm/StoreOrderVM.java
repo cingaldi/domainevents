@@ -1,4 +1,4 @@
-package com.cingaldi.stores_srv.vm;
+package com.cingaldi.stores_srv.presentation.vm;
 
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.fasterxml.jackson.annotation.JsonProperty;

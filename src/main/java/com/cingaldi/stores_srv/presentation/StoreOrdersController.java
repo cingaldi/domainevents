@@ -1,12 +1,12 @@
-package com.cingaldi.stores_srv;
+package com.cingaldi.stores_srv.presentation;
 
 import com.cingaldi.commons.resttools.BodyVersionSwitch;
 import com.cingaldi.commons.resttools.CollectionResource;
 import com.cingaldi.commons.resttools.ErrorResource;
 import com.cingaldi.commons.resttools.exceptions.MediaNotSupportedException;
 import com.cingaldi.stores_srv.application.StoreService;
-import com.cingaldi.stores_srv.vm.StoreOrderVM;
-import com.cingaldi.stores_srv.vm.StoreOrderOldVM;
+import com.cingaldi.stores_srv.presentation.vm.StoreOrderVM;
+import com.cingaldi.stores_srv.presentation.vm.StoreOrderOldVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

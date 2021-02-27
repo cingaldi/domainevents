@@ -13,7 +13,7 @@ public class BodyVersionSwitchTest {
     @Test
     void givenVersion_itParses() {
 
-        var result = new BodyVersionSwitch().withVersion("application/vnd.glovoapp.v1", "");
+        var result = new BodyVersionSwitch().withVersion("application/vnd.cingaldi.v1", "");
 
         assertThat(result.getVersion()).isEqualTo("v1");
     }
@@ -21,7 +21,7 @@ public class BodyVersionSwitchTest {
     @Test
     void givenVersionAnfPlus_itParses() {
 
-        var result = new BodyVersionSwitch().withVersion("application/vnd.glovoapp.v1+json", "");
+        var result = new BodyVersionSwitch().withVersion("application/vnd.cingaldi.v1+json", "");
 
         assertThat(result.getVersion()).isEqualTo("v1");
     }
@@ -46,7 +46,7 @@ public class BodyVersionSwitchTest {
     @Test
     void givenVersion_whenMatch_thenCallback() {
         var result = new BodyVersionSwitch()
-                .withVersion("application/vnd.glovoapp.v1+json", "")
+                .withVersion("application/vnd.cingaldi.v1+json", "")
                 .whenMatch("v1", () -> new ResponseEntity(HttpStatus.OK))
                 .getResult();
 
@@ -57,7 +57,7 @@ public class BodyVersionSwitchTest {
     @Test
     void givenDefaultVersion_whenMatch_thenCallback() {
         var result = new BodyVersionSwitch()
-                .withVersion("application/vnd.glovoapp.v1+json", "v1")
+                .withVersion("application/vnd.cingaldi.v1+json", "v1")
                 .whenDefault(() -> new ResponseEntity(HttpStatus.OK))
                 .getResult();
 
@@ -68,7 +68,7 @@ public class BodyVersionSwitchTest {
     @Test
     void givenDefaultVersion_whenNoMatch_theOrCallback() {
         var result = new BodyVersionSwitch()
-                .withVersion("application/vnd.glovoapp.v2+json", "v1")
+                .withVersion("application/vnd.cingaldi.v2+json", "v1")
                 .whenDefault(() -> new ResponseEntity(HttpStatus.OK))
                 .orMatch("v2", () -> new ResponseEntity(HttpStatus.ACCEPTED))
                 .getResult();
@@ -80,7 +80,7 @@ public class BodyVersionSwitchTest {
     @Test
     void givenDefaultVersion_whenNoMatchTwoTimes_theOrCallback() {
         var result = new BodyVersionSwitch()
-                .withVersion("application/vnd.glovoapp.v3+json", "v1")
+                .withVersion("application/vnd.cingaldi.v3+json", "v1")
                 .whenDefault(() -> new ResponseEntity(HttpStatus.OK))
                 .orMatch("v2", () -> new ResponseEntity(HttpStatus.ACCEPTED))
                 .orMatch("v3", () -> new ResponseEntity(HttpStatus.BAD_REQUEST))
@@ -96,7 +96,7 @@ public class BodyVersionSwitchTest {
 
         assertThrows(Exception.class, () -> {
             new BodyVersionSwitch()
-                    .withVersion("application/vnd.glovoapp.v3+json", "v1")
+                    .withVersion("application/vnd.cingaldi.v3+json", "v1")
                     .whenDefault(() -> new ResponseEntity(HttpStatus.OK))
                     .orMatch("v2", () -> new ResponseEntity(HttpStatus.ACCEPTED))
                     .getResult();

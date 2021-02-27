@@ -3,17 +3,17 @@ package com.cingaldi.stores_srv.presentation.vm;
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class StoreOrderVM {
+public class StoreOrderOldVM {
 
     @JsonProperty("orderId")
     private Long orderId;
 
-    public StoreOrderVM () {
+    public StoreOrderOldVM() {
 
     }
 
-    public static StoreOrderVM fromEntity(StoreOrder entity) {
-        var ret = new StoreOrderVM();
+    public static StoreOrderOldVM fromEntity(StoreOrder entity) {
+        var ret = new StoreOrderOldVM();
         ret.orderId = entity.getId();
 
         return ret;

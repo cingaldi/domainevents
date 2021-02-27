@@ -1,7 +1,9 @@
 package com.cingaldi.orders_srv.domain.events;
 
 import com.cingaldi.commons.domaintools.CrossDomainEvent;
+import lombok.Getter;
 
+@Getter
 public class OrderCreatedEvt extends CrossDomainEvent {
 
     private Long storeId;

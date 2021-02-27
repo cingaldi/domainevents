@@ -7,13 +7,15 @@ import java.util.function.Supplier;
 public class BodyVersionSwitch {
 
 
+    public static final String HEADER_MEDIA_PREFIX = "application/vnd.com.cingaldi.";
+
     public Version withVersion(String header, String defaultVersion) {
 
-        if (!header.contains("application/vnd.glovoapp.")) {
+        if (!header.contains(HEADER_MEDIA_PREFIX)) {
             return new Version(defaultVersion, true);
         }
 
-        String version = header.split("application/vnd.glovoapp.")[1].split("\\+")[0];
+        String version = header.split("application/vnd.com.cingaldi.")[1].split("\\+")[0];
         return new Version(version, version.equals(defaultVersion));
     }
 

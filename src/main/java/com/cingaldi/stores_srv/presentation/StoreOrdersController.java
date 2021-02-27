@@ -1,6 +1,7 @@
 package com.cingaldi.stores_srv.presentation;
 
 import com.cingaldi.BodyVersionSwitch;
+import com.cingaldi.commons.domaintools.DomainCollectionResult;
 import com.cingaldi.commons.resttools.CollectionResource;
 import com.cingaldi.stores_srv.application.StoreService;
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
@@ -26,7 +27,7 @@ public class StoreOrdersController {
     @GetMapping("/stores/{storeId}/orders")
     public ResponseEntity getOrders(@PathVariable("storeId") Long storeId, @RequestHeader("Accept") String acceptHeader) {
 
-        List<StoreOrder> result = storeService.getOrdersFromStore(storeId);
+        var result = storeService.getOrdersFromStore(storeId);
 
         /*
         NOTICE: you don't really need to use this method. Spring Boot provides convenient annotations to match
@@ -35,25 +36,12 @@ public class StoreOrdersController {
          */
         return new BodyVersionSwitch()
                 .withVersion(acceptHeader, "")
-                .whenDefault(()-> {
-                    List<StoreOrderOldVM> mappedResult = result
-                            .stream()
-                            .map((item)-> StoreOrderOldVM.fromEntity(item))
-                            .collect(Collectors.toList());
-
-                    return new ResponseEntity(new CollectionResource<>(mappedResult), HttpStatus.OK);
-                }
-
+                .whenDefault(()->
+                    new ResponseEntity(new CollectionResource<>(result.mapTo(StoreOrderOldVM::fromEntity)), HttpStatus.OK)
                 )
-                .orMatch("v1", () -> {
-                    List<StoreOrderVM> mappedResult = result
-                            .stream()
-                            .map((item) -> StoreOrderVM.fromEntity(item))
-                            .collect(Collectors.toList());
-
-                    return new ResponseEntity(new CollectionResource<>(mappedResult), HttpStatus.OK);
-
-                })
+                .orMatch("v1", () ->
+                    new ResponseEntity(new CollectionResource<>(result.mapTo(StoreOrderVM::fromEntity)), HttpStatus.OK)
+                )
                 .getResult();
     }
 

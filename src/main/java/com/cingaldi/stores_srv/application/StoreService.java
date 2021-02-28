@@ -22,7 +22,6 @@ public class StoreService {
     private StoreOrdersRepository repository;
 
     @EventListener
-    @Async
     public void onOrderCreated(OrderCreatedEvt evt) {
         repository.save(new StoreOrder(evt.getAggregateId(), evt.getStoreId()));
     }

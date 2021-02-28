@@ -24,6 +24,6 @@ public class EventsAdapter {
 
         log.debug("publishing event topic={} , payload={}" , evt.topic(), evt.serialize(evt));
 
-        rabbitTemplate.convertAndSend(evt.topic(), evt.serialize(evt));
+        rabbitTemplate.convertAndSend("amq.direct", evt.topic(), evt.serialize(evt));
     }
 }

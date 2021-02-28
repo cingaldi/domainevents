@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,23 +38,11 @@ public class IntegrationTest {
     RabbitTemplate rabbitTemplate;
 
     @Autowired
-    RabbitAdmin rabbitAdmin;
-
-    @Autowired
     MockMvc mockMvc;
 
     @BeforeEach
     public void beforeEach() {
         repository.save(Order.create());
-
-        Queue test = new Queue("test", false);
-        Binding binding = BindingBuilder
-                .bind(test)
-                .to(new DirectExchange("amq.direct"))
-                .with("events.aggregates.orders.created");
-
-        rabbitAdmin.declareQueue(test);
-        rabbitAdmin.declareBinding(binding);
     }
 
     @Test
@@ -74,5 +61,17 @@ public class IntegrationTest {
 
             assertThat(parsed.getStoreId()).isEqualTo(1);
         });
+    }
+
+    @TestConfiguration
+    public static class RabbitConfig {
+
+        @Bean
+        public Binding testBind() {
+            return BindingBuilder
+                    .bind(new Queue("test" , false))
+                    .to(new DirectExchange("amq.direct"))
+                    .with("events.aggregates.orders.created");
+        }
     }
 }

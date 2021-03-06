@@ -1,6 +1,7 @@
 package com.cingaldi.stores_srv.domain.models;
 
 import com.cingaldi.commons.domaintools.AggregateRoot;
+import com.cingaldi.stores_srv.domain.services.StoreConfigurationProvider;
 import lombok.Getter;
 
 import javax.persistence.Entity;
@@ -31,18 +32,18 @@ public class StoreOrder extends AggregateRoot {
     }
 
     public StoreOrder accept(Instant now, StoreConfiguration configuration) {
-        Instant expiration = createdAt().plus(configuration.getAcceptanceExpiration(), SECONDS).toInstant(UTC);
+        LocalDateTime expirationTime = createdAt().plus(configuration.getAcceptanceExpiration(), SECONDS);
+        LocalDateTime acceptanceTime = LocalDateTime.ofInstant(now, UTC);
 
-        if (now.isAfter(expiration)) {
+        if (acceptanceTime.isAfter(expirationTime)) {
             orderStatus = Status.REJECTED;
             return this;
         }
 
-        acceptedAt = LocalDateTime.ofInstant(now, UTC);
+        acceptedAt = acceptanceTime;
         orderStatus = Status.ACCEPTED;
         return this;
     }
-
     public boolean hasStatus(Status status) {
         return orderStatus.equals(status);
     }

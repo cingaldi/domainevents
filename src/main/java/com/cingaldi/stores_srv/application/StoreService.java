@@ -6,6 +6,7 @@ import com.cingaldi.stores_srv.application.dtos.CreateStoreDTO;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreOldDTO;
 import com.cingaldi.stores_srv.domain.events.StoreOrderReceivedEvt;
 import com.cingaldi.stores_srv.domain.models.Store;
+import com.cingaldi.stores_srv.domain.models.StoreConfiguration;
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.domain.repositories.StoreOrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 
 @Service
@@ -42,7 +42,7 @@ public class StoreService {
     public void acceptOrder(Long storeId, Long orderId) {
 
         repository.findById(orderId).ifPresent( storeOrder -> {
-            storeOrder.accept(Instant.now());
+            storeOrder.accept(Instant.now(), new StoreConfiguration(30));
             repository.save(storeOrder);
         });
     }

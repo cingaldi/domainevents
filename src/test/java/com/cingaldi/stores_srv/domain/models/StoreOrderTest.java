@@ -10,6 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class StoreOrderTest {
 
+    private StoreConfiguration defaultConfiguration = new StoreConfiguration(30);
+
     private static final Long ORDER_ID = 0L;
     private static final Long STORE_ID = 0L;
 
@@ -21,7 +23,7 @@ class StoreOrderTest {
         
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
         
-        assertThat(sut.accept(acceptanceTime).hasStatus(ACCEPTED)).isTrue();
+        assertThat(sut.accept(acceptanceTime, defaultConfiguration).hasStatus(ACCEPTED)).isTrue();
         
     }
 
@@ -33,7 +35,7 @@ class StoreOrderTest {
 
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
 
-        assertThat(sut.accept(acceptanceTime).hasStatus(REJECTED)).isTrue();
+        assertThat(sut.accept(acceptanceTime, defaultConfiguration).hasStatus(REJECTED)).isTrue();
 
     }
 
@@ -46,7 +48,7 @@ class StoreOrderTest {
 
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
 
-        assertThat(sut.accept(acceptanceTime).hasStatus(ACCEPTED)).isTrue();
+        assertThat(sut.accept(acceptanceTime, defaultConfiguration).hasStatus(ACCEPTED)).isTrue();
 
     }
 
@@ -58,7 +60,7 @@ class StoreOrderTest {
 
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
 
-        assertThat(sut.accept(creationTime).acceptedAt()).isNotEmpty();
+        assertThat(sut.accept(creationTime, defaultConfiguration).acceptedAt()).isNotEmpty();
 
     }
 

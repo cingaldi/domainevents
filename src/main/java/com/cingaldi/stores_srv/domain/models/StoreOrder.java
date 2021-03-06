@@ -4,11 +4,9 @@ import com.cingaldi.commons.domaintools.AggregateRoot;
 import lombok.Getter;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 
 import static java.time.ZoneOffset.UTC;
@@ -32,8 +30,8 @@ public class StoreOrder extends AggregateRoot {
         this.storeId = storeId;
     }
 
-    public StoreOrder accept(Instant now) {
-        Instant expiration = createdAt().plus(30, SECONDS).toInstant(UTC);
+    public StoreOrder accept(Instant now, StoreConfiguration configuration) {
+        Instant expiration = createdAt().plus(configuration.getAcceptanceExpiration(), SECONDS).toInstant(UTC);
 
         if (now.isAfter(expiration)) {
             orderStatus = Status.REJECTED;

@@ -1,8 +1,10 @@
 package com.cingaldi.stores_srv.application;
 
+import com.cingaldi.stores_srv.domain.models.Store;
 import com.cingaldi.stores_srv.domain.models.StoreConfiguration;
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.domain.repositories.StoreOrdersRepository;
+import com.cingaldi.stores_srv.domain.repositories.StoreRepository;
 import com.cingaldi.stores_srv.domain.services.StoreConfigurationProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 class StoreServiceTest {
 
     @Mock
+    StoreRepository storeRepository;
+
+    @Mock
     StoreOrdersRepository repository;
 
     @Mock
@@ -31,6 +36,7 @@ class StoreServiceTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
+        when(storeRepository.findById(any())).thenReturn(Optional.of(new Store()));
         when(provider.forCity(any())).thenReturn(new StoreConfiguration(30));
     }
 

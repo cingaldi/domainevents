@@ -2,6 +2,7 @@ package com.cingaldi.stores_srv.application;
 
 import com.cingaldi.commons.domaintools.DomainCollectionResult;
 import com.cingaldi.commons.domaintools.DomainEntityResult;
+import com.cingaldi.commons.resttools.exceptions.ResourceNotFoundException;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreDTO;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreOldDTO;
 import com.cingaldi.stores_srv.domain.events.StoreOrderReceivedEvt;
@@ -9,6 +10,7 @@ import com.cingaldi.stores_srv.domain.models.Store;
 import com.cingaldi.stores_srv.domain.models.StoreConfiguration;
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.domain.repositories.StoreOrdersRepository;
+import com.cingaldi.stores_srv.domain.repositories.StoreRepository;
 import com.cingaldi.stores_srv.domain.services.StoreConfigurationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -19,6 +21,9 @@ import java.time.Instant;
 
 @Service
 public class StoreService {
+
+    @Autowired
+    private StoreRepository storeRepository;
 
     @Autowired
     private StoreOrdersRepository repository;
@@ -45,9 +50,17 @@ public class StoreService {
 
     public void acceptOrder(Long storeId, Long orderId) {
 
-        repository.findById(orderId).ifPresent( storeOrder -> {
-            storeOrder.accept(Instant.now(), provider.forCity(""));
-            repository.save(storeOrder);
-        });
+        StoreConfiguration configuration = storeRepository
+                .findById(storeId)
+                .map(store -> store.getConfiguration(provider))
+                .orElseThrow(ResourceNotFoundException::new);
+
+        StoreOrder order = repository
+                .findById(orderId)
+                .map( storeOrder -> storeOrder.accept(Instant.now(), configuration))
+                .orElseThrow(ResourceNotFoundException::new);
+
+        repository.save(order);
+
     }
 }

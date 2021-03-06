@@ -1,6 +1,7 @@
 package com.cingaldi.stores_srv.presentation;
 
 import com.cingaldi.orders_srv.domain.events.OrderCreatedEvt;
+import com.cingaldi.stores_srv.domain.events.StoreOrderReceivedEvt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class OrdersSubscriber {
     public void receiveMessage(String message) {
         try {
             OrderCreatedEvt evt = new ObjectMapper().readValue(message,OrderCreatedEvt.class);
-            publisher.publishEvent(evt);
+            publisher.publishEvent(new StoreOrderReceivedEvt("StoreOrder", evt.getAggregateId(), evt.getStoreId()));
         } catch (JsonProcessingException e) {
             log.warn("malformed message");
             throw new AmqpRejectAndDontRequeueException(e);

@@ -13,4 +13,12 @@ public class DomainEntityResult <ENTITY>{
     public <DTO> DTO mapTo(Function<ENTITY, DTO> mapper) {
         return mapper.apply(entity);
     }
+
+    protected ENTITY getResult() {
+        return entity;
+    }
+
+    public TestDomainEntityResult forTesting() {
+        return new TestDomainEntityResult(entity);
+    }
 }

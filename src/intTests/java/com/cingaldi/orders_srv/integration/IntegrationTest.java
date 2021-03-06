@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,9 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class IntegrationTest {
 
     @Autowired
-    OrderRepository repository;
-
-    @Autowired
     RabbitTemplate rabbitTemplate;
 
     @Autowired
@@ -42,7 +40,6 @@ public class IntegrationTest {
 
     @BeforeEach
     public void beforeEach() {
-        repository.save(Order.create());
     }
 
     @Test
@@ -69,7 +66,7 @@ public class IntegrationTest {
         @Bean
         public Binding testBind() {
             return BindingBuilder
-                    .bind(new Queue("test" , false))
+                    .bind(new Queue("test" , true))
                     .to(new DirectExchange("amq.direct"))
                     .with("events.aggregates.orders.created");
         }

@@ -15,6 +15,6 @@ public class StoreOrderVM {
     private Href order;
 
     public  static StoreOrderVM fromEntity(StoreOrder entity) {
-         return new StoreOrderVM(new Href(String.format("/orders/%d", entity.getId())));
+         return new StoreOrderVM(new Href(String.format("/orders/%d", entity.getOrderId())));
     }
 }

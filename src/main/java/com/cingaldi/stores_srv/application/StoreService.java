@@ -2,18 +2,19 @@ package com.cingaldi.stores_srv.application;
 
 import com.cingaldi.commons.domaintools.DomainCollectionResult;
 import com.cingaldi.commons.domaintools.DomainEntityResult;
-import com.cingaldi.orders_srv.domain.events.OrderCreatedEvt;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreDTO;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreOldDTO;
+import com.cingaldi.stores_srv.domain.events.StoreOrderReceivedEvt;
 import com.cingaldi.stores_srv.domain.models.Store;
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.domain.repositories.StoreOrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 
 @Service
 public class StoreService {
@@ -22,7 +23,7 @@ public class StoreService {
     private StoreOrdersRepository repository;
 
     @EventListener
-    public void onOrderCreated(OrderCreatedEvt evt) {
+    public void onOrderCreated(StoreOrderReceivedEvt evt) {
         repository.save(new StoreOrder(evt.getAggregateId(), evt.getStoreId()));
     }
 
@@ -36,5 +37,13 @@ public class StoreService {
 
     public DomainCollectionResult<StoreOrder> getOrdersFromStore(Long storeId) {
         return new DomainCollectionResult<>(repository.findByStoreId(storeId));
+    }
+
+    public void acceptOrder(Long storeId, Long orderId) {
+
+        repository.findById(orderId).ifPresent( storeOrder -> {
+            storeOrder.accept(Instant.now());
+            repository.save(storeOrder);
+        });
     }
 }

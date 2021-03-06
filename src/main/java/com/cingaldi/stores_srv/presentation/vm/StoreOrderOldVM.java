@@ -14,7 +14,7 @@ public class StoreOrderOldVM {
 
     public static StoreOrderOldVM fromEntity(StoreOrder entity) {
         var ret = new StoreOrderOldVM();
-        ret.orderId = entity.getId();
+        ret.orderId = entity.getOrderId();
 
         return ret;
     }

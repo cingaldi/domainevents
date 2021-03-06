@@ -3,7 +3,11 @@ package com.cingaldi.commons.domaintools;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+
+import static java.time.ZoneOffset.UTC;
 
 @Entity
 public class AggregateRoot extends AbstractAggregateRoot {
@@ -49,12 +53,18 @@ public class AggregateRoot extends AbstractAggregateRoot {
         return this.deleted;
     }
 
-    public Date createdAt() {
-        return createdAt;
+    public LocalDateTime createdAt() {
+        return createdAt.toInstant()
+                .atZone(ZoneId.from(UTC))
+                .toLocalDateTime();
     }
 
     public Date updatedAt() {
         return updatedAt;
+    }
+
+    protected void setCreationTime(Date creationTime) {
+        createdAt = creationTime;
     }
 
 }

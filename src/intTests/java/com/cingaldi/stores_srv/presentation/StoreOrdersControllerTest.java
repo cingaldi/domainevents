@@ -2,9 +2,7 @@ package com.cingaldi.stores_srv.presentation;
 
 import com.cingaldi.stores_srv.domain.models.StoreOrder;
 import com.cingaldi.stores_srv.domain.repositories.StoreOrdersRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +47,7 @@ class StoreOrdersControllerTest {
             .accept("application/json")
         )
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.result[0].orderId", is((fixture.getId().intValue()))));
+        .andExpect(jsonPath("$.result[0].orderId", is((fixture.getOrderId().intValue()))));
     }
 
 

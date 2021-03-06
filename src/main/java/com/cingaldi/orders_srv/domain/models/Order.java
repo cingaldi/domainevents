@@ -1,6 +1,7 @@
 package com.cingaldi.orders_srv.domain.models;
 
 import com.cingaldi.orders_srv.domain.events.OrderCreatedEvt;
+import lombok.Getter;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity(name = "orders_srv_orders")
+@Getter
 public class Order extends AbstractAggregateRoot<Order> {
 
     @Id
@@ -25,15 +27,15 @@ public class Order extends AbstractAggregateRoot<Order> {
         return id;
     }
 
-    public void initialize(Long storeId) {
-        this.storeId = storeId;
-        registerEvent(new OrderCreatedEvt(getId(), storeId));
-    }
-
-    public static Order create () {
+    public static Order create (Long storeId) {
         Order ret = new Order();
-        ret.state = OrderState.CREATED;
+        ret.storeId = storeId;
 
         return ret;
+    }
+
+    public void setCreated() {
+        state = OrderState.CREATED;
+        registerEvent(new OrderCreatedEvt(getId(), getStoreId()));
     }
 }

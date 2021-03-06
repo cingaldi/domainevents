@@ -20,9 +20,9 @@ public class OrdersService {
 
     @Transactional
     public void createOrder(Long storeId) {
-        Order order = repository.save(Order.create());
+        Order order = repository.save(Order.create(storeId));
 
-        order.initialize(storeId);
+        order.setCreated();
 
         repository.save(order);
     }

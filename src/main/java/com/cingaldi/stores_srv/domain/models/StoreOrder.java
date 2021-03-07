@@ -1,6 +1,7 @@
 package com.cingaldi.stores_srv.domain.models;
 
 import com.cingaldi.commons.domaintools.AggregateRoot;
+import com.cingaldi.commons.resttools.exceptions.BusinessRuleViolatonException;
 import com.cingaldi.stores_srv.domain.commands.AcceptOrderCmd;
 import com.cingaldi.stores_srv.domain.services.StoreConfigurationProvider;
 import lombok.Getter;
@@ -38,6 +39,10 @@ public class StoreOrder extends AggregateRoot {
 
         LocalDateTime expirationTime = createdAt().plus(acceptanceExpiration, SECONDS);
         LocalDateTime acceptanceTime = LocalDateTime.ofInstant(now, UTC);
+
+        if(storeId != cmd.getStoreId()) {
+            throw new BusinessRuleViolatonException();
+        }
 
         if (acceptanceTime.isAfter(expirationTime)) {
             orderStatus = Status.REJECTED;

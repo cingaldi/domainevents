@@ -10,10 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class StoreOrderTest {
 
-    private StoreConfiguration defaultConfiguration = new StoreConfiguration(30);
-
     private static final Long ORDER_ID = 0L;
     private static final Long STORE_ID = 0L;
+    private static int ACCEPTANCE_EXPIRATION = 30;
 
     @Test
     void accept_givenOrder_whenAcceptedInTime_thenStatusAccepted() {
@@ -23,7 +22,7 @@ class StoreOrderTest {
         
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
         
-        assertThat(sut.accept(acceptanceTime, defaultConfiguration).hasStatus(ACCEPTED)).isTrue();
+        assertThat(sut.accept(acceptanceTime, ACCEPTANCE_EXPIRATION).hasStatus(ACCEPTED)).isTrue();
         
     }
 
@@ -35,7 +34,7 @@ class StoreOrderTest {
 
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
 
-        assertThat(sut.accept(acceptanceTime, defaultConfiguration).hasStatus(REJECTED)).isTrue();
+        assertThat(sut.accept(acceptanceTime, ACCEPTANCE_EXPIRATION).hasStatus(REJECTED)).isTrue();
 
     }
 
@@ -48,7 +47,7 @@ class StoreOrderTest {
 
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
 
-        assertThat(sut.accept(acceptanceTime, defaultConfiguration).hasStatus(ACCEPTED)).isTrue();
+        assertThat(sut.accept(acceptanceTime, ACCEPTANCE_EXPIRATION).hasStatus(ACCEPTED)).isTrue();
 
     }
 
@@ -60,7 +59,7 @@ class StoreOrderTest {
 
         var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
 
-        assertThat(sut.accept(creationTime, defaultConfiguration).acceptedAt()).isNotEmpty();
+        assertThat(sut.accept(creationTime, ACCEPTANCE_EXPIRATION).acceptedAt()).isNotEmpty();
 
     }
 

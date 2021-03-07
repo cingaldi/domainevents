@@ -31,8 +31,8 @@ public class StoreOrder extends AggregateRoot {
         this.storeId = storeId;
     }
 
-    public StoreOrder accept(Instant now, StoreConfiguration configuration) {
-        LocalDateTime expirationTime = createdAt().plus(configuration.getAcceptanceExpiration(), SECONDS);
+    public StoreOrder accept(Instant now, int acceptanceExpiration) {
+        LocalDateTime expirationTime = createdAt().plus(acceptanceExpiration, SECONDS);
         LocalDateTime acceptanceTime = LocalDateTime.ofInstant(now, UTC);
 
         if (acceptanceTime.isAfter(expirationTime)) {

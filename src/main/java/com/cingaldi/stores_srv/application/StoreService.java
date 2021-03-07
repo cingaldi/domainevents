@@ -57,7 +57,7 @@ public class StoreService {
 
         StoreOrder order = repository
                 .findById(orderId)
-                .map( storeOrder -> storeOrder.accept(Instant.now(), configuration))
+                .map( storeOrder -> storeOrder.accept(Instant.now(), configuration.getAcceptanceExpiration()))
                 .orElseThrow(ResourceNotFoundException::new);
 
         repository.save(order);

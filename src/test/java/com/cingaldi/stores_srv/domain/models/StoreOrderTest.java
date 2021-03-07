@@ -1,5 +1,6 @@
 package com.cingaldi.stores_srv.domain.models;
 
+import com.cingaldi.stores_srv.domain.commands.AcceptOrderCmd;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -16,25 +17,25 @@ class StoreOrderTest {
 
     @Test
     void accept_givenOrder_whenAcceptedInTime_thenStatusAccepted() {
-        
-        var creationTime = Instant.parse("2021-01-01T08:00:00Z");
+
+        var sut = givenOrder();
+
         var acceptanceTime = Instant.parse("2021-01-01T08:00:01Z");
+        var command = new AcceptOrderCmd(STORE_ID, acceptanceTime, ACCEPTANCE_EXPIRATION);
         
-        var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
-        
-        assertThat(sut.accept(acceptanceTime, ACCEPTANCE_EXPIRATION).hasStatus(ACCEPTED)).isTrue();
+        assertThat(sut.accept(command).hasStatus(ACCEPTED)).isTrue();
         
     }
 
     @Test
     void accept_givenOrder_whenAcceptedAfterExpiration_thenStatusRejected() {
 
-        var creationTime = Instant.parse("2021-01-01T08:00:00Z");
+        var sut = givenOrder();
+
         var acceptanceTime = Instant.parse("2021-01-01T08:00:31Z");
+        var command = new AcceptOrderCmd(STORE_ID, acceptanceTime, ACCEPTANCE_EXPIRATION);
 
-        var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
-
-        assertThat(sut.accept(acceptanceTime, ACCEPTANCE_EXPIRATION).hasStatus(REJECTED)).isTrue();
+        assertThat(sut.accept(command).hasStatus(REJECTED)).isTrue();
 
     }
 
@@ -42,12 +43,12 @@ class StoreOrderTest {
     @Test
     void accept_givenOrder_whenAcceptedAEqualsExpiration_thenStatusAccepted() {
 
-        var creationTime = Instant.parse("2021-01-01T08:00:00Z");
+        var sut = givenOrder();
+
         var acceptanceTime = Instant.parse("2021-01-01T08:00:30Z");
+        var command = new AcceptOrderCmd(STORE_ID, acceptanceTime, ACCEPTANCE_EXPIRATION);
 
-        var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
-
-        assertThat(sut.accept(acceptanceTime, ACCEPTANCE_EXPIRATION).hasStatus(ACCEPTED)).isTrue();
+        assertThat(sut.accept(command).hasStatus(ACCEPTED)).isTrue();
 
     }
 
@@ -55,12 +56,17 @@ class StoreOrderTest {
     @Test
     void accept_givenOrder_whenAccepted_thenHasAcceptanceTime() {
 
-        var creationTime = Instant.parse("2021-01-01T08:00:00Z");
+        StoreOrder sut = givenOrder();
 
-        var sut = StoreOrder.createAtTime(creationTime, ORDER_ID, STORE_ID);
+        var acceptanceTime = Instant.parse("2021-01-01T08:00:01Z");
+        var command = new AcceptOrderCmd(STORE_ID, acceptanceTime, ACCEPTANCE_EXPIRATION);
 
-        assertThat(sut.accept(creationTime, ACCEPTANCE_EXPIRATION).acceptedAt()).isNotEmpty();
+        assertThat(sut.accept(command).acceptedAt()).isNotEmpty();
 
+    }
+
+    private StoreOrder givenOrder() {
+        return StoreOrder.createAtTime(Instant.parse("2021-01-01T08:00:00Z"), ORDER_ID, STORE_ID);
     }
 
 }

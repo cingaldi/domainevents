@@ -1,6 +1,7 @@
 package com.cingaldi.stores_srv.domain.models;
 
 import com.cingaldi.commons.domaintools.AggregateRoot;
+import com.cingaldi.stores_srv.domain.commands.AcceptOrderCmd;
 import com.cingaldi.stores_srv.domain.services.StoreConfigurationProvider;
 import lombok.Getter;
 
@@ -31,7 +32,10 @@ public class StoreOrder extends AggregateRoot {
         this.storeId = storeId;
     }
 
-    public StoreOrder accept(Instant now, int acceptanceExpiration) {
+    public StoreOrder accept(AcceptOrderCmd cmd) {
+        Instant now = cmd.getNow();
+        int acceptanceExpiration = cmd.getAcceptanceExpiration();
+
         LocalDateTime expirationTime = createdAt().plus(acceptanceExpiration, SECONDS);
         LocalDateTime acceptanceTime = LocalDateTime.ofInstant(now, UTC);
 
@@ -44,6 +48,7 @@ public class StoreOrder extends AggregateRoot {
         orderStatus = Status.ACCEPTED;
         return this;
     }
+
     public boolean hasStatus(Status status) {
         return orderStatus.equals(status);
     }

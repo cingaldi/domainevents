@@ -5,6 +5,7 @@ import com.cingaldi.commons.domaintools.DomainEntityResult;
 import com.cingaldi.commons.resttools.exceptions.ResourceNotFoundException;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreDTO;
 import com.cingaldi.stores_srv.application.dtos.CreateStoreOldDTO;
+import com.cingaldi.stores_srv.domain.commands.AcceptOrderCmd;
 import com.cingaldi.stores_srv.domain.events.StoreOrderReceivedEvt;
 import com.cingaldi.stores_srv.domain.models.Store;
 import com.cingaldi.stores_srv.domain.models.StoreConfiguration;
@@ -57,7 +58,7 @@ public class StoreService {
 
         StoreOrder order = repository
                 .findById(orderId)
-                .map( storeOrder -> storeOrder.accept(Instant.now(), configuration.getAcceptanceExpiration()))
+                .map( storeOrder -> storeOrder.accept(new AcceptOrderCmd(storeId, Instant.now(), configuration.getAcceptanceExpiration())))
                 .orElseThrow(ResourceNotFoundException::new);
 
         repository.save(order);
